@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <GoMedia_Pargo>
+            <active>true</active>
+            <codePool>community</codePool>
+            <depends>
+                <Mage_Shipping />
+            </depends>
+        </GoMedia_Pargo>
+    </modules>
+</config>
