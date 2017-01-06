@@ -169,7 +169,7 @@ class GoMedia_Pargo_Model_Observer {
             $waybill = $response->data->waybillNumber;
             $pargoHelper = Mage::helper('pargo');
 //            $waybillUrl = $pargoHelper->getPargoWaybillUrl() . $waybill;
-            $message = "Success! created waybill <a href='$response->data->LabelReferenceBarcode' target='_blank'>" . $response->data->waybillNumber . "</a>";
+            $message = "Success! created waybill <a href='" . $response->data->LabelReferenceBarcode . "' target='_blank'>" . $response->data->waybillNumber . "</a>";
             $this->createTrack($shipmentID, $waybill);
         }
         $message = substr($message, 0 , 25000);
