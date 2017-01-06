@@ -4,6 +4,11 @@
 
 To view a full working demo, go here <http://pargo.gomedia.co.za/>
 
+## Version
+
+This module has only been tested for Magento CE 1.9x
+It will probably work on older versions of Magento too.
+
 ## Installation
 
 To install this module place the contents of the app directory into your project's app directory.
