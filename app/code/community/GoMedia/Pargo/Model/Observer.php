@@ -1,6 +1,20 @@
 <?php
 
 /**
+ * Copyright 2017 Stock2Shop.com
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ *
  * Fired each time an order is updated.
  *
  * Checks the Pargo address (stored as session)
@@ -10,11 +24,6 @@
  * Create a shipment (means adding order on the pargo system)
  *
  * All responses are logged to the comments section
- *
- * @author Emmanuel Minnaar (www.stock2shop.com)
- * @copyright  Copyright (c) 2016 Stock2Shop
- * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class GoMedia_Pargo_Model_Observer {
 
