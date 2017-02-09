@@ -1,0 +1,93 @@
+<?php
+$pargoHelper = Mage::helper('pargo');
+$pargoShippingAddress = $pargoHelper->getShipping();
+if(isset($pargoShippingAddress['pargo'])) {
+    $pargoShippingAddressJSON = json_encode($pargoShippingAddress['pargo']);
+} else {
+    $pargoShippingAddressJSON = "{}";
+}
+$pargoUrl = $pargoHelper->getPargoPointUrl();
+$pargoShippingCode = $pargoHelper->getShippingCode();
+$pargoShippingMethod = $pargoHelper->getShippingMethod();
+?>
+
+<script type="text/javascript">
+
+    /************************************
+     * Pargo Pickup (Start)
+     ************************************/
+
+    // Create global variable to hold state
+    // Use namespace to make sure it does not break other script
+    // DO NOT CREATE GLOBAL VARIABLES WITHOUT NAMESPACE!!!
+    // Set php vars at top so you don;t have to mix PHP and JS which is difficult to read.
+    var pargo = {
+        url : "<?php echo $pargoUrl; ?>",
+        code: "<?php echo $pargoShippingCode; ?>",
+        method: "<?php echo $pargoShippingMethod; ?>",
+        getMethod: function() {
+            return this.code + "_" + this.method;
+        },
+        address: { data: <?php echo $pargoShippingAddressJSON ?>},
+
+        // Selects the pargo point, displays it and creates the form.
+        // This also updates the right hand side options on onepagecheckout
+        selectPargoPoint: function(item) {
+            jQuery('#pargo-address').remove();
+            var data = item.data;
+
+            var innerHtml = '<strong>' + data.storeName + '</strong>';
+            innerHtml += '<br />' + data.address1;
+            innerHtml += '<br />' + data.suburb + ', ' + data.city + ", " + data.postalcode;
+            innerHtml += "<br />" + data.businessHours;
+
+            var formHtml = '<div id="pargo-address"><p>' + innerHtml +
+                '</p>'+ pargo.generatePargoElements(data) +'</div>';
+
+            jQuery('label[for="s_method_' + pargo.getMethod() + '"]').append(formHtml);
+            jQuery('#shipping-progress-opcheckout address').html(innerHtml);
+        },
+
+        // Generates HTML form elements
+        generatePargoElements: function(data) {
+            elements = "";
+            for (var key in data) {
+                elements += '<input type="hidden" name="pargo[' + key + ']" value="'+ data[key] +'" />';
+            }
+            return elements;
+        },
+
+        // Clears message
+        clearMessage: function() {
+            jQuery('ul.messages').remove();
+        }
+
+    };
+
+    jQuery(document).ready(function() {
+        jQuery('input[type="radio"][name="estimate_method"], input[type="radio"][name="shipping_method"]').click(function(el) {
+            pargo.clearMessage();
+            console.log(jQuery(this).val() , pargo.getMethod());
+            if (jQuery(this).val() == pargo.getMethod()) {
+                window.open(pargo.url);
+            } else {
+                jQuery('#pargo-address').remove();
+            }
+        });
+    });
+
+    if (window.addEventListener) {
+        window.addEventListener("message", pargo.selectPargoPoint, false);
+    } else {
+        window.attachEvent("onmessage", pargo.selectPargoPoint);
+    }
+
+    if(pargo.address.data.pargoPointCode) {
+        pargo.selectPargoPoint(pargo.address);
+    }
+
+    /************************************
+     * Pargo Pickup (End)
+     ************************************/
+    //]]>
+</script>
